@@ -50,9 +50,8 @@ NSString * const MTLBooleanValueTransformerName = @"MTLBooleanValueTransformerNa
 
 	return [MTLValueTransformer
 		reversibleTransformerWithForwardBlock:^ id (id JSONDictionary) {
-			if (JSONDictionary == nil) return nil;
+			if (JSONDictionary == nil || ![JSONDictionary isKindOfClass:NSDictionary.class]) return nil;
 
-			NSAssert([JSONDictionary isKindOfClass:NSDictionary.class], @"Expected a dictionary, got: %@", JSONDictionary);
 
 			return [MTLJSONAdapter modelOfClass:modelClass fromJSONDictionary:JSONDictionary error:NULL];
 		}
@@ -71,9 +70,7 @@ NSString * const MTLBooleanValueTransformerName = @"MTLBooleanValueTransformerNa
 
 	return [MTLValueTransformer
 		reversibleTransformerWithForwardBlock:^ id (NSArray *dictionaries) {
-			if (dictionaries == nil) return nil;
-
-			NSAssert([dictionaries isKindOfClass:NSArray.class], @"Expected an array of dictionaries, got: %@", dictionaries);
+			if (dictionaries == nil || ![dictionaries isKindOfClass:NSArray.class]) return nil;
 
 			NSMutableArray *models = [NSMutableArray arrayWithCapacity:dictionaries.count];
 			for (id JSONDictionary in dictionaries) {
